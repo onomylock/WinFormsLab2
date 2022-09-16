@@ -31,13 +31,12 @@ namespace WinFormsLab2
 		private void InitializeComponent()
 		{
 			
-			chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();			
 
 			legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 
-			series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			series1 = new System.Windows.Forms.DataVisualization.Charting.Series();			
 			series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			
 			//this.chartAreas.Add(chartArea1);
@@ -45,7 +44,8 @@ namespace WinFormsLab2
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.dataGridView2 = new System.Windows.Forms.DataGridView();
 
-			this.addButton = new System.Windows.Forms.Button();
+			this.addButton1 = new System.Windows.Forms.Button();
+			this.addButton2 = new System.Windows.Forms.Button();
 			this.buttonOpen = new System.Windows.Forms.Button();
 			this.buttonSave = new System.Windows.Forms.Button();
 			this.buttonOpenChartGrath = new System.Windows.Forms.Button();
@@ -75,15 +75,25 @@ namespace WinFormsLab2
 			this.dataGridView2.Size = new System.Drawing.Size(240, 150);
 			this.dataGridView2.TabIndex = 0;
 			// 
-			// addButton
+			// addButton1
 			// 
-			this.addButton.Location = new System.Drawing.Point(686, 213);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(75, 23);
-			this.addButton.TabIndex = 1;
-			this.addButton.Text = "Add";
-			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
+			this.addButton1.Location = new System.Drawing.Point(686, 213);
+			this.addButton1.Name = "addButton1";
+			this.addButton1.Size = new System.Drawing.Size(75, 23);
+			this.addButton1.TabIndex = 1;
+			this.addButton1.Text = "Add1";
+			this.addButton1.UseVisualStyleBackColor = true;
+			this.addButton1.Click += new System.EventHandler(this.AddButton_Click1);
+			// 
+			// addButton2
+			// 
+			this.addButton2.Location = new System.Drawing.Point(886, 213);
+			this.addButton2.Name = "addButton2";
+			this.addButton2.Size = new System.Drawing.Size(75, 23);
+			this.addButton2.TabIndex = 1;
+			this.addButton2.Text = "Add2";
+			this.addButton2.UseVisualStyleBackColor = true;
+			this.addButton2.Click += new System.EventHandler(this.AddButton_Click2);
 			// 
 			// ButtonOpen
 			// 
@@ -107,7 +117,7 @@ namespace WinFormsLab2
 			// 
 			// ButtonOpenChartGrath
 			// 
-			this.buttonOpenChartGrath.Location = new System.Drawing.Point(686, 292);
+			this.buttonOpenChartGrath.Location = new System.Drawing.Point(886, 292);
 			this.buttonOpenChartGrath.Name = "ChartGrath";
 			this.buttonOpenChartGrath.Size = new System.Drawing.Size(75, 23);
 			this.buttonOpenChartGrath.TabIndex = 1;
@@ -116,12 +126,15 @@ namespace WinFormsLab2
 			this.buttonOpenChartGrath.Click += new System.EventHandler(this.ButtonOpenChartGrath_Click);
 			// 
 			// chart1
-			// 
+			// 				
 			chartArea1.Name = "ChartArea1";
 			this.chart1.ChartAreas.Add(chartArea1);
 			legend1.Enabled = true;
 			legend1.Name = "Legend1";
-			this.chart1.Legends.Add(legend1);			
+			legend2.Enabled = true;
+			legend2.Name = "Legend2";
+			this.chart1.Legends.Add(legend2);
+			this.chart1.Legends.Add(legend1);		
 			this.chart1.Location = new System.Drawing.Point(12, 16);
 			this.chart1.Name = "chart1";
 			series1.ChartArea = "ChartArea1";
@@ -129,10 +142,16 @@ namespace WinFormsLab2
 			series1.Name = "Series1";
 			series1.XValueMember = "X";
 			series1.YValueMembers = "Y";
+			series2.ChartArea = "ChartArea1";
+			series2.Legend = "Legend2";
+			series2.Name = "Series2";
+			series2.XValueMember = "X";
+			series2.YValueMembers = "Y";
 			this.chart1.Series.Add(series1);
+			this.chart1.Series.Add(series2);
 			this.chart1.Size = new System.Drawing.Size(500, 300);
 			this.chart1.TabIndex = 2;
-			this.chart1.Text = "chart1";			
+			this.chart1.Text = "chart1";						
 			//
 			// ComboBox
 			//
@@ -152,7 +171,8 @@ namespace WinFormsLab2
 			//this.Controls.Add(this.button1);
 			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.chart1);
-			this.Controls.Add(this.addButton);
+			this.Controls.Add(this.addButton1);
+			this.Controls.Add(this.addButton2);
 			this.Controls.Add(this.buttonSave);
 			this.Controls.Add(this.buttonOpen);
 			this.Controls.Add(this.buttonOpenChartGrath);
@@ -164,15 +184,13 @@ namespace WinFormsLab2
 			((System.ComponentModel.ISupportInitialize)(dataGridView2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
 			this.ResumeLayout(false);
-
 		}
 
 
 		#endregion
 		//private System.Windows.Forms.DataVisualization.Charting.ChartAreaCollection chartAreas;
 		private System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1;
-		private System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2;
-
+		
 		private System.Windows.Forms.DataVisualization.Charting.Legend legend1;
 		private System.Windows.Forms.DataVisualization.Charting.Legend legend2;
 
@@ -182,7 +200,8 @@ namespace WinFormsLab2
 		private System.Windows.Forms.DataGridView dataGridView1;
 		private System.Windows.Forms.DataGridView dataGridView2;
 
-		private System.Windows.Forms.Button addButton;
+		private System.Windows.Forms.Button addButton1;
+		private System.Windows.Forms.Button addButton2;
 		private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
 		//private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
 		private System.Windows.Forms.Button buttonOpen;

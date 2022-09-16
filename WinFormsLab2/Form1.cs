@@ -9,13 +9,14 @@ namespace WinFormsLab2
 	{
 		public BindingSource Data { get; set; }
 		public BindingSource DataFile { get; set; }
+
 		public Form1()
 		{
 			Data = new BindingSource();
 			DataFile = new BindingSource();
-			DataFile.Add(new Data() { X = 3, Y = 5 });
-			DataFile.Add(new Data() { X = 2, Y = 5 });
-			DataFile.Add(new Data() { X = 4, Y = 6 });
+			//DataFile.Add(new Data() { X = 3, Y = 5 });
+			//DataFile.Add(new Data() { X = 2, Y = 5 });
+			//DataFile.Add(new Data() { X = 4, Y = 6 });
 			Data.Add(new Data() { X = 0, Y = 0 });
 			Data.Add(new Data() { X = 1, Y = 1 });
 			Data.Add(new Data() { X = 2, Y = 4 });
@@ -24,18 +25,21 @@ namespace WinFormsLab2
 			dataGridView2.DataSource = DataFile;
 			//dataGridView1.DataSource = DataFile;
 			this.Invalidated += Form1_Invalidated;
+			this.Invalidated += Form1_Invalidated2;
 
 			dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
 			dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
 
-			dataGridView2.RowsRemoved += DataGridView1_RowsRemoved;
-			dataGridView2.CellValueChanged += DataGridView1_CellValueChanged;
-
-			//dataGridView1.AllowUserToAddRowsChanged += DataGridView1_AllowUserToAddRowsChanged;
-			//dataGridView1.AllowUserToDeleteRowsChanged += DataGridView1_AllowUserToDeleteRowsChanged;
+			dataGridView2.RowsRemoved += DataGridView2_RowsRemoved;
+			dataGridView2.CellValueChanged += DataGridView2_CellValueChanged;			
 		}
 
 		private void DataGridView1_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
+		{
+			Invalidate();
+		}
+
+		private void DataGridView2_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
 		{
 			Invalidate();
 		}
@@ -45,27 +49,64 @@ namespace WinFormsLab2
 			Invalidate();
 		}
 
+		private void DataGridView2_RowsRemoved(object? sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			Invalidate();
+		}
+
+		private void Form1_Invalidated2(object? sender, InvalidateEventArgs e)
+		{
+			if (comboBox1.SelectedIndex == 0)
+			{				
+				chart1.Series[1].Points.Clear();
+				chart1.Series[1].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+				foreach (Data dataItem in DataFile.List)
+				{
+					chart1.Series[1].Points.AddXY(dataItem.X, dataItem.Y);
+				}
+			}
+			else if (comboBox1.SelectedIndex == 1)
+			{				
+				chart1.Series[1].Points.Clear();
+				chart1.Series[1].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+				foreach (Data dataItem in DataFile.List)
+				{
+					chart1.Series[1].Points.AddXY(dataItem.X, dataItem.Y);
+				}				
+			}
+		}
+
 		private void Form1_Invalidated(object? sender, InvalidateEventArgs e)
 		{
 			if (comboBox1.SelectedIndex == 0)
-			{
-				chart1.DataSource = null;
-				chart1.Series[0].ChartType =
-			   System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-				chart1.DataSource = Data;
+			{				
+				chart1.Series[0].Points.Clear();
+				chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+				foreach (Data dataItem in Data.List)
+				{
+					chart1.Series[0].Points.AddXY(dataItem.X, dataItem.Y);
+				}				
 			}
 			else if (comboBox1.SelectedIndex == 1)
-			{
-				chart1.DataSource = null;
-				chart1.Series[0].ChartType =
-			   System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-				chart1.DataSource = Data;
+			{				
+				chart1.Series[0].Points.Clear();
+				chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+				foreach (Data dataItem in Data.List)
+				{
+					chart1.Series[0].Points.AddXY(dataItem.X, dataItem.Y);
+				}				
 			}
 		}
 		
-		private void AddButton_Click(object sender, EventArgs e)
+		private void AddButton_Click1(object sender, EventArgs e)
 		{
 			Data.Add(new Data() { X = 4, Y = 16 });
+			Invalidate();
+		}
+
+		private void AddButton_Click2(object sender, EventArgs e)
+		{
+			DataFile.Add(new Data() { X = 4, Y = 16 });
 			Invalidate();
 		}
 
@@ -98,6 +139,7 @@ namespace WinFormsLab2
 							}							
 						}
 					}
+					Invalidate();
 				}
 			}
 		}
@@ -116,22 +158,8 @@ namespace WinFormsLab2
 
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
-					//((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-					//chartArea2.Name = "ChartArea2";
-					//chart1.ChartAreas.Add(chartArea2);
-					//legend2.Enabled = true;
-					//legend2.Name = "Legend2";
-					//this.chart1.Legends.Add(legend2);
-					//series2.ChartArea = "ChartArea1";
-					//series2.Legend = "Legend1";
-					//series2.Name = "Series1";
-					//series2.XValueMember = "X";
-					//series2.YValueMembers = "Y";
-					//this.chart1.Series.Add(series2);
-					//((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
 					filePath = openFileDialog.FileName;
-					var fileStream = openFileDialog.OpenFile();
-					//Data.Clear();
+					var fileStream = openFileDialog.OpenFile();				
 
 					using (StreamReader reader = new StreamReader(fileStream))
 					{
@@ -141,10 +169,11 @@ namespace WinFormsLab2
 							if (stringLine != null)
 							{
 								var tmp = stringLine.Split();
-								Data.Add(new Data() { X = double.Parse(tmp[0]), Y = double.Parse(tmp[1]) });
+								DataFile.Add(new Data() { X = double.Parse(tmp[0]), Y = double.Parse(tmp[1]) });
 							}
 						}
 					}
+					Invalidate();
 				}
 			}
 		}
